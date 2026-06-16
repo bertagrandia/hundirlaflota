@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-navy-bg px-4 py-8 relative">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-xl text-center mb-6 naval-heading">Sala {{ code }}</h1>
+
+    @if (errorMessage()) {
+      <div class="naval-card text-navy-hit text-sm text-center mb-4 max-w-md mx-auto">{{ errorMessage() }}</div>
+    }
+
+    @if (phase() === 'playing') {
+      <app-game-status
+        [isMyTurn]="isMyTurn()"
+        [ownShipsRemaining]="ownShipsRemaining()"
+        [enemyShipsRemaining]="enemyShipsRemaining()"
+        [opponentName]="opponentName()"
+      ></app-game-status>
+    }
+
+    @if (phase() === 'placement' && !placementSubmitted()) {
+      <app-board phase="placement" (placementConfirmed)="onPlacementConfirmed($event)"></app-board>
+    }
+
+    @if (phase() === 'placement' && placementSubmitted()) {
+      <div class="naval-card max-w-md mx-auto text-center flex flex-col items-center gap-4">
+        <span
+          class="inline-block w-6 h-6 border-2 border-navy-miss border-t-transparent rounded-full animate-spin"
+        ></span>
+        <p class="text-sm opacity-80">Esperando a que el rival coloque sus barcos...</p>
+      </div>
+    }
+
+    @if (phase() === 'playing' || phase() === 'finished') {
+      <app-board
+        phase="playing"
+        [ownGrid]="ownGrid()"
+        [ownShots]="ownShots()"
+        [enemyGrid]="enemyGrid()"
+        [enemyShots]="enemyShots()"
+        [isMyTurn]="isMyTurn() && phase() === 'playing'"
+        [lastAttack]="lastAttack()"
+        (attackCell)="onAttackCell($event)"
+      ></app-board>
+
+      @if (phase() === 'playing') {
+        <div class="text-center mt-6">
+          <button class="naval-button naval-button--danger" (click)="surrender()">Rendirse</button>
+        </div>
+      }
+    }
+
+    @if (opponentDisconnected() && !finished()) {
+      <div class="naval-card max-w-md mx-auto text-center mt-6 flex flex-col gap-4">
+        <p class="text-sm">El rival se ha desconectado.</p>
+        <button class="naval-button" (click)="backToLobby()">Volver al lobby</button>
+      </div>
+    }
+  </div>
+
+  @if (finished()) {
+    <div class="fixed inset-0 bg-black/70 flex items-center justify-center px-4 z-50">
+      <div class="naval-card max-w-sm w-full text-center flex flex-col gap-4">
+        <h2 class="text-xl naval-heading">{{ iWon() ? 'Victoria' : 'Derrota' }}</h2>
+        <p class="text-sm opacity-80">
+          {{ iWon() ? 'Has hundido toda la flota enemiga' : 'Tu flota ha sido hundida' }}
+        </p>
+        <div class="flex flex-col gap-2 mt-2">
+          <button class="naval-button" [disabled]="rematchRequested()" (click)="requestRematch()">
+            {{ rematchRequested() ? 'Esperando revancha...' : 'Revancha' }}
+          </button>
+          <button class="naval-button" (click)="backToLobby()">Volver al Lobby</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

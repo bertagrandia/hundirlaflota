@@ -1,0 +1,115 @@
+:host {
+  display: block;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  border: 2px solid #2d4b6b;
+  background-color: #1b3a5c;
+  width: min(90vw, 340px);
+  aspect-ratio: 1 / 1;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.board-cell {
+  position: relative;
+  border: 1px solid rgba(232, 244, 248, 0.08);
+  background-color: #1b3a5c;
+  overflow: hidden;
+}
+
+.board-cell--clickable {
+  cursor: pointer;
+}
+
+.board-cell--clickable:hover {
+  background-color: rgba(232, 244, 248, 0.12);
+}
+
+.board-cell--ship {
+  background-color: #2d6a4f;
+}
+
+.board-cell--hit {
+  background-color: #e63946;
+}
+
+.board-cell--sunk {
+  background-color: #4a4a4a;
+}
+
+.board-cell--sunk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(230, 57, 70, 0.45);
+}
+
+.board-cell--miss::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28%;
+  height: 28%;
+  margin: -14% 0 0 -14%;
+  border-radius: 50%;
+  background-color: #e8f4f8;
+}
+
+.board-cell--preview-ok {
+  outline: 2px solid #2d6a4f;
+  background-color: rgba(45, 106, 79, 0.4);
+}
+
+.board-cell--preview-bad {
+  outline: 2px solid #e63946;
+  background-color: rgba(230, 57, 70, 0.3);
+}
+
+.cell-anim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.animate-splash {
+  background: radial-gradient(circle, rgba(232, 244, 248, 0.85), transparent 70%);
+}
+
+.animate-explosion {
+  background: radial-gradient(circle, rgba(230, 57, 70, 0.9), transparent 70%);
+}
+
+.animate-sunk {
+  background: radial-gradient(circle, rgba(74, 74, 74, 0.95), transparent 70%);
+}
+
+.fleet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background-color: #0f2138;
+  border: 1px solid #2d4b6b;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #e8f4f8;
+}
+
+.fleet-item--selected {
+  border-color: #e8f4f8;
+}
+
+.fleet-item--placed {
+  opacity: 0.5;
+}

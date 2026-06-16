@@ -1,0 +1,96 @@
+@if (phase === 'placement') {
+  <div class="flex flex-col lg:flex-row gap-8 items-center lg:items-start justify-center">
+    <div class="flex flex-col items-center gap-2">
+      <h3 class="naval-heading text-sm opacity-80">Tu Flota</h3>
+      <div class="board-grid" (mouseleave)="hoverCell.set(null)">
+        @for (row of rows; track row) {
+          <div class="board-row">
+            @for (col of cols; track col) {
+              <div
+                class="board-cell"
+                [class.board-cell--ship]="isPlacedShipCell(row, col)"
+                [class.board-cell--preview-ok]="isPreviewCell(row, col) && previewValid()"
+                [class.board-cell--preview-bad]="isPreviewCell(row, col) && !previewValid()"
+                (mouseenter)="hoverCell.set({ row, col })"
+                (click)="onPlacementCellClick(row, col)"
+              ></div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="naval-card flex flex-col gap-4 w-full max-w-xs">
+      <h3 class="naval-heading text-sm opacity-80">Flota disponible</h3>
+      <div class="flex flex-col gap-2">
+        @for (def of fleetDefs; track def.id) {
+          <button
+            type="button"
+            class="fleet-item"
+            [class.fleet-item--placed]="isShipPlaced(def.id)"
+            [class.fleet-item--selected]="selectedShipId() === def.id"
+            (click)="selectShip(def.id)"
+          >
+            <span>{{ def.label }} ({{ def.size }})</span>
+            @if (isShipPlaced(def.id)) {
+              <span class="text-xs underline" (click)="removeShip(def.id, $event)">quitar</span>
+            }
+          </button>
+        }
+      </div>
+
+      <button type="button" class="naval-button" (click)="toggleOrientation()">
+        Orientación: {{ orientation() === 'horizontal' ? 'Horizontal' : 'Vertical' }} (tecla R)
+      </button>
+
+      <button type="button" class="naval-button" (click)="randomPlacement()">Colocación aleatoria</button>
+
+      <button type="button" class="naval-button" [disabled]="!allPlaced()" (click)="confirmPlacement()">
+        Confirmar colocación
+      </button>
+    </div>
+  </div>
+}
+
+@if (phase === 'playing') {
+  <div class="flex flex-col lg:flex-row gap-10 items-center lg:items-start justify-center">
+    <div class="flex flex-col items-center gap-2">
+      <h3 class="naval-heading text-sm opacity-80">Tu Flota</h3>
+      <div class="board-grid">
+        @for (row of rows; track row) {
+          <div class="board-row">
+            @for (col of cols; track col) {
+              <div class="board-cell" [ngClass]="ownCellClass(row, col)">
+                @if (isAnimating(row, col, 'own')) {
+                  <span class="cell-anim" [ngClass]="animationClass()"></span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-2">
+      <h3 class="naval-heading text-sm opacity-80">Flota Enemiga</h3>
+      <div class="board-grid">
+        @for (row of rows; track row) {
+          <div class="board-row">
+            @for (col of cols; track col) {
+              <div
+                class="board-cell"
+                [ngClass]="enemyCellClass(row, col)"
+                [class.board-cell--clickable]="canAttack(row, col)"
+                (click)="onEnemyCellClick(row, col)"
+              >
+                @if (isAnimating(row, col, 'enemy')) {
+                  <span class="cell-anim" [ngClass]="animationClass()"></span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

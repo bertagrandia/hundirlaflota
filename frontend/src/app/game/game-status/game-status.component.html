@@ -1,0 +1,15 @@
+<div class="naval-card flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-3xl mx-auto mb-6">
+  <div class="flex items-center gap-2">
+    <span
+      class="w-3 h-3 rounded-full animate-pulse-turn"
+      [class.bg-navy-ship]="isMyTurn"
+      [class.bg-navy-hit]="!isMyTurn"
+    ></span>
+    <span class="text-sm naval-heading">{{ isMyTurn ? 'Tu turno' : opponentName + ' está jugando' }}</span>
+  </div>
+
+  <div class="flex items-center gap-6 text-xs opacity-80">
+    <span>Tus barcos hundidos: {{ totalShips - ownShipsRemaining }}/{{ totalShips }}</span>
+    <span>{{ opponentName }} hundidos: {{ totalShips - enemyShipsRemaining }}/{{ totalShips }}</span>
+  </div>
+</div>

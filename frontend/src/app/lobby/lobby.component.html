@@ -1,0 +1,82 @@
+<div class="min-h-screen flex items-center justify-center bg-navy-bg px-4 py-10">
+  <div class="naval-card w-full max-w-md">
+    <h1 class="text-2xl text-center mb-1 naval-heading">Hundir la Flota</h1>
+
+    @if (!nickname()) {
+      <h2 class="text-xs text-center mb-6 text-navy-miss opacity-70">Identifícate para jugar</h2>
+      <div class="flex flex-col gap-3">
+        <input
+          type="text"
+          class="naval-input"
+          placeholder="Nombre de capitán"
+          [ngModel]="nicknameInput()"
+          (ngModelChange)="nicknameInput.set($event)"
+          (keyup.enter)="confirmNickname()"
+        />
+        @if (errorMessage()) {
+          <div class="text-sm text-navy-hit text-center">{{ errorMessage() }}</div>
+        }
+        <button class="naval-button" (click)="confirmNickname()">Continuar</button>
+      </div>
+    } @else {
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-xs opacity-70">Capitán</span>
+        <div class="flex items-center gap-2">
+          <span class="text-sm">{{ nickname() }}</span>
+          <button class="text-xs underline opacity-60 hover:opacity-100" (click)="changeNickname()">cambiar</button>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="text-sm text-navy-hit text-center mb-4">{{ errorMessage() }}</div>
+      }
+
+      @if (!createdCode()) {
+        <div class="flex flex-col gap-6">
+          <button class="naval-button" [disabled]="creating()" (click)="createRoom()">
+            {{ creating() ? 'Creando...' : 'Crear Sala' }}
+          </button>
+
+          <button class="naval-button" [disabled]="startingAi()" (click)="playVsAiDirect()">
+            {{ startingAi() ? 'Iniciando...' : 'Jugar contra la IA' }}
+          </button>
+
+          <div class="flex flex-col gap-2 border-t border-navy-board pt-6">
+            <label class="text-xs opacity-70">Unirse a una sala</label>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                maxlength="6"
+                class="naval-input flex-1 uppercase"
+                placeholder="CÓDIGO"
+                [ngModel]="roomCodeInput()"
+                (ngModelChange)="roomCodeInput.set($event)"
+              />
+              <button class="naval-button" [disabled]="joining()" (click)="joinRoom()">
+                {{ joining() ? '...' : 'Unirse' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="flex flex-col items-center gap-4">
+          <span class="text-xs opacity-70">Código de la sala</span>
+          <span class="text-3xl font-bold tracking-widest">{{ createdCode() }}</span>
+
+          @if (waitingForOpponent()) {
+            <div class="flex items-center gap-3 text-sm opacity-80">
+              <span
+                class="inline-block w-4 h-4 border-2 border-navy-miss border-t-transparent rounded-full animate-spin"
+              ></span>
+              Esperando oponente...
+            </div>
+          }
+
+          <button class="naval-button mt-2" [disabled]="startingAi()" (click)="playVsAi()">
+            {{ startingAi() ? 'Iniciando...' : 'Jugar contra la IA' }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

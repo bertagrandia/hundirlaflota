@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: #0a1628;
+  color: #e8f4f8;
+  font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+h1,
+h2,
+h3,
+button,
+.naval-heading {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@keyframes splash-expand {
+  0% {
+    transform: scale(0.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes explosion-pop {
+  0% {
+    transform: scale(0.2) rotate(0deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.1) rotate(20deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6) rotate(40deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sunk-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-turn {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.animate-splash {
+  animation: splash-expand 0.6s ease-out forwards;
+}
+
+.animate-explosion {
+  animation: explosion-pop 0.5s ease-out forwards;
+}
+
+.animate-sunk {
+  animation: sunk-reveal 0.4s ease-in forwards;
+}
+
+.animate-pulse-turn {
+  animation: pulse-turn 1.4s ease-in-out infinite;
+}
+
+.naval-input {
+  background-color: #0f2138;
+  border: 1px solid #2d4b6b;
+  color: #e8f4f8;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.25rem;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+}
+
+.naval-input:focus {
+  outline: none;
+  border-color: #e8f4f8;
+}
+
+.naval-button {
+  background-color: #1b3a5c;
+  color: #e8f4f8;
+  border: 1px solid #2d6a4f;
+  padding: 0.6rem 1.4rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.naval-button:hover:not(:disabled) {
+  background-color: #2d6a4f;
+}
+
+.naval-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.naval-button--danger {
+  border-color: #e63946;
+}
+
+.naval-button--danger:hover:not(:disabled) {
+  background-color: #e63946;
+}
+
+.naval-card {
+  background-color: #0f2138;
+  border: 1px solid #2d4b6b;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
